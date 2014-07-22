@@ -15,7 +15,7 @@ namespace GroupMonitorApp.Model.Mappings
             Id(x => x.Id);
             Map(x => x.DayOfWeek).UniqueKey("Days").Not.Nullable();
             Map(x => x.WeekType).UniqueKey("Days").Not.Nullable();
-            References(x => x.Subject).Not.Nullable();
+            References(x => x.Subject).Not.Nullable().Not.LazyLoad();
             Map(x => x.SubjNumber).Not.Nullable().UniqueKey("Days").Not.Nullable();
          }
          

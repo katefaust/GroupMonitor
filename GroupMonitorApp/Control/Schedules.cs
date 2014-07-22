@@ -70,6 +70,7 @@ namespace GroupMonitorApp.Control
                     WeekType = weekType,
                     SubjNumber = subjectNumber
                 });
+            DBConnection.AddScheduleEntry(entries.Last());
         }
         public void AddSubject(String name)
         {
@@ -84,6 +85,41 @@ namespace GroupMonitorApp.Control
         public List<Subject> GetSubjectsList() 
         {
             return subjects;
+        }
+        public SchedulesEntry GetSchedulesEntry(DateTime date, int subjectNumber)
+        {
+            SchedulesEntry entry = entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
+                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 2 : 1)).First();
+            return entry;
+ 
+        }
+        public List<SchedulesEntry> GetSchedulesEntry(DateTime date)
+        {
+            return entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 2 : 1)).ToList();
+
+        }
+        public static int GetWeekNumberСontainsDate(DateTime date)
+        {
+            DateTime SemesterStart = SemesterStartedDate;
+            return (date.Day - SemesterStart.Day + DaysFromMonday(date)) / 7;
+        }
+        public static int DaysFromMonday(DateTime date)
+        {
+            switch (date.DayOfWeek)
+            {
+                case DayOfWeek.Monday: return 0;
+                case DayOfWeek.Tuesday: return 1;
+                case DayOfWeek.Wednesday: return 2;
+                case DayOfWeek.Thursday: return 3;
+                case DayOfWeek.Friday: return 4;
+                case DayOfWeek.Saturday: return 5;
+                case DayOfWeek.Sunday: return 6;
+            }
+            return 0;
+        }
+        public int NumberOfSubjects(DateTime date)
+        {
+            return GetSchedulesEntry(date).Count;
         }
     }
 }

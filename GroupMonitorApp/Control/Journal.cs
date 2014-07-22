@@ -41,6 +41,7 @@ namespace GroupMonitorApp.Control
             {
                 Name = name
             });
+            DBConnection.AddStudent(students.Last());
         }
         public void RemoveStudent(int studentId)
         {
@@ -107,7 +108,7 @@ namespace GroupMonitorApp.Control
         public List<JournalEntry> GetEntries(int weekNumber)
         {
             DateTime from = new DateTime(), to = new DateTime();
-            from = Schedules.SemesterStartedDate.AddDays(-DaysFromMonday(Schedules.SemesterStartedDate)).AddDays(7 * weekNumber);
+            from = Schedules.SemesterStartedDate.AddDays(-Schedules.DaysFromMonday(Schedules.SemesterStartedDate)).AddDays(7 * weekNumber);
             to = from.AddDays(7);
             return GetEntries(from,to);
         }
@@ -121,28 +122,20 @@ namespace GroupMonitorApp.Control
         {
             return entries.Where(x => x.Day >= from && x.Day <= to).ToList();
         }
-        public int GetWeekNumberСontainsDate(DateTime date)
+        public Student GetStudentById(int Id)
         {
-            DateTime SemesterStart = Schedules.SemesterStartedDate;
-            return (date.Day - SemesterStart.Day + DaysFromMonday(date)) / 7;
+            return students.Where(x => x.Id == Id).First();
         }
-        private int DaysFromMonday(DateTime date)
+        public int NumberOfStudents()
         {
-            switch (date.DayOfWeek)
-            {
-                case DayOfWeek.Monday: return 0;
-                case DayOfWeek.Tuesday: return 1;
-                case DayOfWeek.Wednesday: return 2;
-                case DayOfWeek.Thursday: return 3;
-                case DayOfWeek.Friday: return 4;
-                case DayOfWeek.Saturday: return 5;
-                case DayOfWeek.Sunday: return 6;
-            }
-            return 0;
+            return students.Count;
         }
-        private Student GetStudentById(int Id)
+        public bool HasEntry(int studentId, int subjNumber, DateTime date)
         {
-            return students.Where(x => x.Id == Id).Select(x => x).First();
+            if (entries.Where(x => x.Stud == GetStudentById(studentId) && x.SubjNumber == subjNumber && x.Day == date).Count() != 0)
+                return true;
+            else
+                return false;
         }
     }
 }

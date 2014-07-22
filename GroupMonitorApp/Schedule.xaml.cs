@@ -82,6 +82,7 @@ namespace GroupMonitorApp
             l.Background = Brushes.White;
             l.BorderThickness = new Thickness(1);
             schGrid.Children.Add(l);
+            var a = l.GetValue(Content);
         }
         public void DrawList()
         {
@@ -120,7 +121,7 @@ namespace GroupMonitorApp
                     SchCells[i, j] = new Label();
                     DrawLabel(SchCells[i, j], 200, 10, SchSubjectWidth, SchSubjectHeight, "");
                     SchCells[i, j].Name = "LabelDay" + (0 + 1) + "Subj" + (0 + 1);
-                    l.Margin = new Thickness(200, 10, 0, 0);
+                    //l.Margin = new Thickness(200, 10, 0, 0);
                     SchCells[i, j].BorderBrush = Brushes.Black;
                 }
             }
