@@ -42,6 +42,11 @@ namespace GroupMonitorApp.Control
                 Name = name
             });
         }
+        public void RemoveStudent(int studentId)
+        {
+            DBConnection.RemoveStudent(students.Where(x => x.Id == studentId).First());
+            students.Remove(students.Where(x => x.Id == studentId).First());
+        }
         /// <summary>
         /// Добавление новой записи в журнал
         /// </summary>
