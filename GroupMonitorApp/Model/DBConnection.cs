@@ -41,7 +41,7 @@ namespace GroupMonitorApp.Model
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    session.Save(stud);
+                    session.SaveOrUpdate(stud);
                     transaction.Commit();
                 }
             }
@@ -115,7 +115,7 @@ namespace GroupMonitorApp.Model
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    session.Save(entry);
+                    session.SaveOrUpdate(entry);
                     transaction.Commit();
                 }
             }

@@ -14,13 +14,26 @@ namespace GroupMonitorApp.Control
     {
         private List<Student> students;
         private List<JournalEntry> entries;
-        private Schedules schedules;
         
         public Journal()
         {
             students = DBConnection.GetStudentsList();
             entries = DBConnection.GetJournalEntries();
-            this.schedules = new Schedules();
+        }
+        /// <summary>
+        /// Обновить записиь в журнале
+        /// </summary>
+        /// <param name="studentId">Номер студента в журнале</param>
+        /// <param name="subjNumber">Номер предмета в расписании</param>
+        /// <param name="day">Дата записи</param>
+        /// <param name="absent">Новое количество пропусков</param>
+        /// <param name="valid">Уважительная причина</param>
+        public void UpdateEntry(int studentId, int subjNumber, DateTime day, int absent, bool valid)
+        {
+            JournalEntry entry = entries.Where(x => x.Stud == GetStudentById(studentId) && x.SubjNumber == subjNumber && x.Day == day).First();
+            entry.Absent = absent;
+            entry.Valid = valid;
+            DBConnection.AddJournalEntry(entry);
         }
         public void AddStudent(string name)
         {
