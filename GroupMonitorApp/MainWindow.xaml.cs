@@ -37,22 +37,7 @@ namespace GroupMonitorApp
             InitializeComponent();
             journal = new Journal();
             schedules = new Schedules();
-            DrawScene(date);
-            for (int i = 1; i < 16; i++)
-                journal.AddStudent("Студент" + i);
-            for (int i = 1; i < 10; i++)
-                schedules.AddSubject("Предмет" + i);
-            schedules.AddEntry(DayOfWeek.Monday, 1, schedules.GetSubjectsList().ElementAt(4), 1);
-            schedules.AddEntry(DayOfWeek.Monday, 1, schedules.GetSubjectsList().ElementAt(2), 2);
-            schedules.AddEntry(DayOfWeek.Monday, 1, schedules.GetSubjectsList().ElementAt(3), 3);
-            schedules.AddEntry(DayOfWeek.Tuesday, 1, schedules.GetSubjectsList().ElementAt(2), 1);
-            schedules.AddEntry(DayOfWeek.Tuesday, 1, schedules.GetSubjectsList().ElementAt(5), 2);
-            schedules.AddEntry(DayOfWeek.Wednesday, 1, schedules.GetSubjectsList().ElementAt(4), 1);
-            schedules.AddEntry(DayOfWeek.Wednesday, 1, schedules.GetSubjectsList().ElementAt(7), 2);
-            schedules.AddEntry(DayOfWeek.Wednesday, 1, schedules.GetSubjectsList().ElementAt(1), 3);
-            schedules.AddEntry(DayOfWeek.Thursday, 1, schedules.GetSubjectsList().ElementAt(5), 1);
-            schedules.AddEntry(DayOfWeek.Friday, 1, schedules.GetSubjectsList().ElementAt(3), 1);
-            schedules.AddEntry(DayOfWeek.Friday, 1, schedules.GetSubjectsList().ElementAt(4), 2);
+            DrawScene(date);  
         }
 
         public void DrawLabel(Label l, int width, int height, string content)
@@ -198,7 +183,7 @@ namespace GroupMonitorApp
             else
                 journal.AddEntry(studentId, subjNumber, date, schedules.GetSchedulesEntry(date, subjNumber), absent, valid);
         }
-        /**/
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Schedule sch = new Schedule();
