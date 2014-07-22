@@ -95,6 +95,27 @@ namespace GroupMonitorApp
             l.Drop += SubjectCopy;
             schGrid.Children.Add(l);
         }
+        public void DrawLabelWithoutTB(Label l, int left, int top, int width, int height, string content, string name)
+        {
+            l.Content = content;
+            l.Name = "Label" + name;
+            l.HorizontalAlignment = 0;
+            l.VerticalAlignment = 0;
+            l.Margin = new Thickness(left, top, 0, 0);
+            l.Padding = new Thickness(4, 0, 4, 0);
+            l.Width = width;
+            l.Height = height;
+            l.HorizontalContentAlignment = HorizontalAlignment.Center;
+            l.VerticalContentAlignment = VerticalAlignment.Center;
+            l.BorderBrush = Brushes.LightGray;
+            l.Background = Brushes.White;
+            l.BorderThickness = new Thickness(1);
+            l.AllowDrop = true;
+            l.Drop += SubjectCopy;
+            schGrid.Children.Add(l);
+        }
+
+
         public void DrawList()
         {
             TextBox t = new TextBox();
@@ -114,7 +135,7 @@ namespace GroupMonitorApp
 
             var replaceable = schGrid.Children.OfType<TextBox>().FirstOrDefault(block => block.Name == "TextBoxSubject" + (TextBoxCount - 2));
             Label replacement = new Label();
-            DrawLabel(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text, "LabelSubject" + (TextBoxCount - 2));
+            DrawLabelWithoutTB(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text, "LabelSubject" + (TextBoxCount - 2));
             schGrid.Children.Remove(replaceable);
             replacement.MouseMove += SubjectMouseMove;
         }
