@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,12 +72,14 @@ namespace GroupMonitorApp
             b.Name = name;
             schGrid.Children.Add(b);
         }
-        public void DrawLabel(Label l, int left, int top, int width, int height, string content)
+        public void DrawLabel(Label l, int left, int top, int width, int height, string content, string name)
         {
             TextBlock tb = new TextBlock();
             tb.Text = content;
             tb.TextWrapping = TextWrapping.Wrap;
+            tb.Name = "TextBox" + name;
             l.Content = tb;
+            l.Name = "Label" + name;
             l.HorizontalAlignment = 0;
             l.VerticalAlignment = 0;
             l.Margin = new Thickness(left, top, 0, 0);
@@ -112,7 +114,7 @@ namespace GroupMonitorApp
 
             var replaceable = schGrid.Children.OfType<TextBox>().FirstOrDefault(block => block.Name == "TextBoxSubject" + (TextBoxCount - 2));
             Label replacement = new Label();
-            DrawLabel(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text);
+            DrawLabel(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text, "LabelSubject" + (TextBoxCount - 2));
             schGrid.Children.Remove(replaceable);
             replacement.MouseMove += SubjectMouseMove;
         }
@@ -120,8 +122,8 @@ namespace GroupMonitorApp
         public void DrawCells(Label l, int i, int j)
         {
             l = new Label();
-            DrawLabel(l, SchLeft + SchDayWidth + SchWeekWidth - 2, SchTop, SchSubjectWidth, SchSubjectHeight, "");
-            l.Name = "LabelDay" + (i + 1) + "Subj" + (j + 1);
+            DrawLabel(l, SchLeft + SchDayWidth + SchWeekWidth - 2, SchTop, SchSubjectWidth, SchSubjectHeight, "", "Day" + (i + 1) + "Subj" + (j + 1));
+            //l.Name = "LabelDay" + (i + 1) + "Subj" + (j + 1);
             l.Margin = new Thickness(SchLeft + SchDayWidth + SchWeekWidth - 2 + i * (SchSubjectWidth - 1), SchTop + j * (SchSubjectHeight - 1), 0, 0);
             l.BorderBrush = Brushes.Black;
             l.MouseDoubleClick += BigCellDoubleClick;
@@ -135,8 +137,8 @@ namespace GroupMonitorApp
                 case 0: name = "I"; break;
                 default: name = "II"; break;
             }
-            DrawLabel(l, SchLeft + SchDayWidth - 1, SchTop, SchWeekWidth, SchWeekHeight, name);
-            l.Name = "LabelDay" + (i + 1) + "Week" + (i % 2 == 0 ? 1 : 2);
+            DrawLabel(l, SchLeft + SchDayWidth - 1, SchTop, SchWeekWidth, SchWeekHeight, name, "Day" + (i + 1) + "Week" + (i % 2 == 0 ? 1 : 2));
+            //l.Name = "LabelDay" + (i + 1) + "Week" + (i % 2 == 0 ? 1 : 2);
             l.Margin = new Thickness(SchLeft + SchDayWidth - 1, SchTop + i * (SchWeekHeight - 1), 0, 0);
             l.BorderBrush = Brushes.Black;
         }
@@ -152,8 +154,8 @@ namespace GroupMonitorApp
                 case 3: name = "ЧТ"; break;
                 case 4: name = "ПТ"; break;
             }
-            DrawLabel(l, SchLeft, SchTop, SchDayWidth, SchSubjectHeight, name);
-            l.Name = "LabelDay" + (i + 1);
+            DrawLabel(l, SchLeft, SchTop, SchDayWidth, SchSubjectHeight, name, "Day" + (i + 1));
+            //l.Name = "LabelDay" + (i + 1);
             l.Margin = new Thickness(SchLeft, SchTop + i * (SchSubjectHeight - 1), 0, 0);
             l.FontWeight = FontWeights.SemiBold;
             l.BorderBrush = Brushes.Black;
@@ -181,13 +183,13 @@ namespace GroupMonitorApp
             Label clicked = (Label)sender;
             Label l1 = new Label();
             Label l2 = new Label();
-            DrawLabel(l1, (int)clicked.Margin.Left, (int)clicked.Margin.Top, (int)clicked.Width, (int)(clicked.Height / 2 + 0.5), "");
-            DrawLabel(l2, (int)clicked.Margin.Left, (int)(clicked.Margin.Top + clicked.Height / 2), (int)clicked.Width, (int)(clicked.Height / 2 + 0.5), "");
+            DrawLabel(l1, (int)clicked.Margin.Left, (int)clicked.Margin.Top, (int)clicked.Width, (int)(clicked.Height / 2 + 0.5), "", clicked.Name.Substring(5) + "Week1");
+            DrawLabel(l2, (int)clicked.Margin.Left, (int)(clicked.Margin.Top + clicked.Height / 2), (int)clicked.Width, (int)(clicked.Height / 2 + 0.5), "", clicked.Name.Substring(5) + "Week2");
             l1.BorderBrush = Brushes.Black;
             l2.BorderBrush = Brushes.Black;
             string name = clicked.Name;
-            l1.Name = name + "Week1";
-            l2.Name = name + "Week2";
+            //l1.Name = name + "Week1";
+            //l2.Name = name + "Week2";
             l1.MouseDoubleClick += SmallCellDoubleClick;
             l2.MouseDoubleClick += SmallCellDoubleClick;
             schGrid.Children.Remove(clicked);
@@ -199,12 +201,12 @@ namespace GroupMonitorApp
             int weekNumber = Convert.ToInt32(name.Substring(18));
             Label l = new Label();
             if (weekNumber == 1)
-                DrawLabel(l, (int)clicked.Margin.Left, (int)clicked.Margin.Top, (int)SchSubjectWidth, (int)SchSubjectHeight, "");
+                DrawLabel(l, (int)clicked.Margin.Left, (int)clicked.Margin.Top, (int)SchSubjectWidth, (int)SchSubjectHeight, "", name.Substring(5, 14));
             else
-                DrawLabel(l, (int)clicked.Margin.Left, (int)(clicked.Margin.Top - clicked.Height + 1), (int)SchSubjectWidth, (int)SchSubjectHeight, "");
+                DrawLabel(l, (int)clicked.Margin.Left, (int)(clicked.Margin.Top - clicked.Height + 1), (int)SchSubjectWidth, (int)SchSubjectHeight, "", name.Substring(5, 14));
             l.BorderBrush = Brushes.Black;
             l.MouseDoubleClick += BigCellDoubleClick;
-            l.Name = name.Substring(0, 14);
+            //l.Name = name.Substring(0, 14);
         }
 
         public void SubjectMouseMove(object sender, MouseEventArgs e)
@@ -216,8 +218,8 @@ namespace GroupMonitorApp
         public void SubjectCopy(object sender, DragEventArgs e)
         {
             Label l = sender as Label;
-            TextBlock dataString = (TextBlock)e.Data.GetData(DataFormats.Text);
-            l.Content = dataString.Text;
+            string dataString = (string)e.Data.GetData(DataFormats.Text);
+            l.Content = dataString.Substring(25);
         }
     }
 }

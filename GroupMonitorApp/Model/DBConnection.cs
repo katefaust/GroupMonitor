@@ -20,12 +20,12 @@ namespace GroupMonitorApp.Model
         {
             return Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012
-                    .ConnectionString(x => x.Server("ADMIN-PC\\SQLEXPRESS")
+                    .ConnectionString(x => x.Server("FAUST-PC\\MS_SQLSERVER")
                                             .Database("new")
                                             .TrustedConnection()))
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssemblyOf<DBConnection>())
-                //.ExposeConfiguration(BuildSchema)
+                .ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
         }
 
