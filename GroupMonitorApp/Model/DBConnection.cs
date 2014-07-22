@@ -46,6 +46,17 @@ namespace GroupMonitorApp.Model
                 }
             }
         }
+        public static void RemoveStudent(Student stud)
+        {
+            using (var session = SessionFactory.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    session.Delete(stud);
+                    transaction.Commit();
+                }
+            }
+        }
 
         public static List<Student> GetStudentsList()
         {
@@ -60,18 +71,28 @@ namespace GroupMonitorApp.Model
             }
         }
 
-        public static void AddDay(SchedulesEntry day)
+        public static void AddScheduleEntry(SchedulesEntry entry)
         {
             using (var session = SessionFactory.OpenSession())
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    session.SaveOrUpdate(day);
+                    session.SaveOrUpdate(entry);
                     transaction.Commit();
                 }
             } 
         }
-
+        public static void RemoveScheduleEntry(SchedulesEntry entry)
+        {
+            using (var session = SessionFactory.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    session.Delete(entry);
+                    transaction.Commit();
+                }
+            }
+        }
         public static List<SchedulesEntry> GetSchedules()
         {
             using (var session = SessionFactory.OpenSession())
@@ -91,6 +112,17 @@ namespace GroupMonitorApp.Model
                 using (var transaction = session.BeginTransaction())
                 {
                     session.SaveOrUpdate(subj);
+                    transaction.Commit();
+                }
+            }
+        }
+        public static void RemoveSubject(Subject subj)
+        {
+            using (var session = SessionFactory.OpenSession())
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    session.Delete(subj);
                     transaction.Commit();
                 }
             }
