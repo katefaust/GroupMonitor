@@ -29,8 +29,8 @@ namespace GroupMonitorApp
         private int StudentCellHeight = 20;
         private int BorderLeft = 10;
         private int BorderTop = 10;
-        private Journal journal;
-        private Schedules schedules;
+        //private Journal journal;
+        //private Schedules schedules;
         public MainWindow()
         {
             InitializeComponent();
@@ -38,8 +38,8 @@ namespace GroupMonitorApp
             for (int i = 0; i < students.Count(); i++)
                 students[i] = "Student #" + (i + 1);
             DrawScene(students, "02/09/2014");
-            journal = new Journal();
-            schedules = new Schedules();
+            //journal = new Journal();
+            //schedules = new Schedules();
                         
         }
 
@@ -63,6 +63,7 @@ namespace GroupMonitorApp
             l.Content = tb;
             l.HorizontalAlignment = 0;
             l.VerticalAlignment = 0;
+            l.VerticalContentAlignment = VerticalAlignment.Center;
             l.Padding = new Thickness(4, 0, 4, 0);
             l.Width = width;
             l.Height = height;
@@ -75,7 +76,7 @@ namespace GroupMonitorApp
         }
 
 
-        public void DrawSubjects(Object date, Grid mainGrid)
+        public void DrawSubjects(Object date)
         {
             int n = GetNumberOfSubj(date);
             Label[] l = new Label[n];
@@ -94,7 +95,7 @@ namespace GroupMonitorApp
 
 
         }
-        public void DrawStudents(Object[] stud, Grid mainGrid)
+        public void DrawStudents(Object[] stud)
         {
             int n = GetNumberOfStud(stud);
             Label[] l = new Label[n];
@@ -111,7 +112,7 @@ namespace GroupMonitorApp
                 var a = mainGrid.Children.OfType<TextBox>().FirstOrDefault(block => block.Name == "");
             }
         }
-        public void DrawCells(Object date, Object[] stud, Grid mainGrid)
+        public void DrawCells(Object date, Object[] stud)
         {
             int n = GetNumberOfStud(stud);
             int m = GetNumberOfSubj(date);
@@ -150,12 +151,9 @@ namespace GroupMonitorApp
 
         public void DrawScene(Object[] students, Object date)
         {
-            this.Content = null;
-            Grid mainGrid = new Grid();
-            this.Content = mainGrid;
-            DrawSubjects(date, mainGrid);
-            DrawStudents(students, mainGrid);
-            DrawCells(date, students, mainGrid);
+            DrawSubjects(date);
+            DrawStudents(students);
+            DrawCells(date, students);
             DrawCalendar(mainGrid);
 
         }
@@ -177,12 +175,18 @@ namespace GroupMonitorApp
                 }
             }
             string[] s = l.Name.Split(new string[] { "LabelSt", "Subj", "Cell" }, StringSplitOptions.RemoveEmptyEntries);
-            journal.AddEntry(int.Parse(s[0]), int.Parse(s[1]), new DateTime(2014,9,1), schedules.entries.Where(x => x.DayOfWeek == DayOfWeek.Monday && x.WeekType == 1 && x.SubjNumber == 1).First(), 1, false);
+            //journal.AddEntry(int.Parse(s[0]), int.Parse(s[1]), new DateTime(2014,9,1), schedules.entries.Where(x => x.DayOfWeek == DayOfWeek.Monday && x.WeekType == 1 && x.SubjNumber == 1).First(), 1, false);
         }
         public void CellClear(object sender, EventArgs e)
         {
             Label l = (Label)sender;
             l.Background = Brushes.White;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Schedule sch = new Schedule();
+            sch.Show();
         }
     }
 }
