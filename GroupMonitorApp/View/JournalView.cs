@@ -41,7 +41,7 @@ namespace GroupMonitorApp.View
             nOfSubjects = schedules.NumberOfSubjects(date);
             cells = new Cell[nOfStudents, nOfSubjects * 2];
         }
-        public void DrawCells()
+        private void DrawCells()
         {
             int width = (SubjectCellHeight + 1) / 2;
             int height = StudentCellHeight;
@@ -58,7 +58,7 @@ namespace GroupMonitorApp.View
             }
 
         }
-        public void DrawLabel(Label l, int width, int height, string content)
+        private void DrawLabel(Label l, int width, int height, string content)
         {
             TextBlock tb = new TextBlock();
             tb.Text = content;
@@ -73,11 +73,11 @@ namespace GroupMonitorApp.View
             l.BorderBrush = Brushes.Black;
             l.BorderThickness = new Thickness(1);
         }
-        public void TransferLabel(Label l, int degree)
+        private void TransferLabel(Label l, int degree)
         {
             l.RenderTransform = new RotateTransform(degree);
         }
-        public void DrawSubjects()
+        private void DrawSubjects()
         {
             int n = schedules.NumberOfSubjects(date);
             Label[] l = new Label[n];
@@ -96,7 +96,7 @@ namespace GroupMonitorApp.View
 
 
         }
-        public void DrawStudents()
+        private void DrawStudents()
         {
             int n = journal.NumberOfStudents();
             Label[] l = new Label[n];
@@ -112,7 +112,7 @@ namespace GroupMonitorApp.View
                 grid.Children.Add(l[i]);
             }
         }
-        public void DrawCalendar(Grid mainGrid)
+        private void DrawCalendar(Grid mainGrid)
         {
             Calendar calendar = new Calendar();
             calendar.Name = "MainCalendar";
@@ -134,6 +134,7 @@ namespace GroupMonitorApp.View
         }
         public void DrawScene()
         {
+            nOfSubjects = schedules.NumberOfSubjects(date);
             grid.Children.Clear();
             DrawSubjects();
             DrawStudents();
@@ -150,14 +151,14 @@ namespace GroupMonitorApp.View
                 cells[entry.Stud.Id - 1, (entry.SubjNumber - 1) * 2 + 1].State = entry.SecondHour;
             }
         }
-        public void CellClick(object sender, EventArgs e)
+        private void CellClick(object sender, EventArgs e)
         {
             Cell cell = (Cell)sender;
             cell.ChangeState();
             CallJournal(cell.StudentId, cell.SubjectNumber);
 
         }
-        public void CellClear(object sender, EventArgs e)
+        private void CellClear(object sender, EventArgs e)
         {
             Cell cell = (Cell)sender;
             cell.State = StudentPresence.Present;
