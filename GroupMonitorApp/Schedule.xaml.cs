@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GroupMonitorApp
 {
@@ -253,22 +249,34 @@ namespace GroupMonitorApp
             Image i = new Image();
             i.Source = img;
             x.Content = i;
-            x.MouseLeftButtonDown += DeleteTextBox;
+            x.Click += DeleteTextBox;
         }
-        public void DelDel(object sender, MouseEventArgs e)
+
+        private void DeleteTextBox(object sender, RoutedEventArgs e)
         {
-            Button l = (Button)sender;
-            schGrid.Children.Remove(schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == ("ButtonX" + l.Name)));
-            
-            //Label z = schGrid.Children.OfType<Label>().FirstOrDefault(x => x.Name == ("LabelX" + l.Name));
-            //z.Margin = new Thickness(10,10,0,0);
-        }
-        public void DeleteTextBox(object sender, MouseEventArgs e)
-        {
+            MessageBox.Show("asd");
             Button X = (Button)sender;
             string name = X.Name.Substring(7);
             Button l = schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == name);
             schGrid.Children.Remove(l);
+        }
+        public void DelDel(object sender, MouseEventArgs e)
+        {
+            Button l = (Button)sender;
+            Thread t = new Thread(method);
+            t.Start(l);
+        }
+
+        void method(object sender)
+        {
+            Thread.Sleep(500);
+            var l = (Button)sender;
+            l.Dispatcher.Invoke((Action)(() => { schGrid.Children.Remove(schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == ("ButtonX" + l.Name))); }));
+            
+        }
+        public void DeleteTextBox(object sender, MouseEventArgs e)
+        {
+            
         }
     }
 }

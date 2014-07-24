@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GroupMonitorApp.Model;
 using GroupMonitorApp.Model.Entities;
-using GroupMonitorApp.Model;
+using System;
+using System.Linq;
 
 namespace GroupMonitorApp.Control
 {
