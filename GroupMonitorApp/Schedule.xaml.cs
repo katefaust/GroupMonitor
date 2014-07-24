@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Timers;
@@ -33,7 +34,7 @@ namespace GroupMonitorApp
         private int SchTop = 35;
 
         private int TextBoxCount = 0;
-
+        private List<Button> Subjects= new List<Button>();
 
         public Schedule()
         {
@@ -109,18 +110,10 @@ namespace GroupMonitorApp
 
                 b.Margin = new Thickness(t.Margin.Left, t.Margin.Top + SubjectHeight + 3, 0, 0);
 
-
-                /*Label replacement = new Label();
-                DrawLabel(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text, "LabelSubject" + (TextBoxCount - 1));
-                replacement.BorderBrush = Brushes.SlateGray;
-                replacement.MouseMove += ShowDel;
-                replacement.MouseLeave += DelDel;
-                schGrid.Children.Remove(replaceable);
-                replacement.MouseMove += SubjectMouseMove;*/
                 Button replacement = new Button();
+                Subjects.Add(replacement);
                 DrawButton(replacement, "LabelSubject" + (TextBoxCount - 1), replaceable.Text);
                 replacement.Margin = new Thickness((int)replaceable.Margin.Left, (int)replaceable.Margin.Top, 0, 0);
-                //replacement.BorderBrush = Brushes.SlateGray;
                 replacement.MouseEnter += ShowDel;
                 replacement.MouseLeave += DelDel;
                 schGrid.Children.Remove(replaceable);
@@ -249,15 +242,24 @@ namespace GroupMonitorApp
             Image i = new Image();
             i.Source = img;
             x.Content = i;
-            x.Click += DeleteTextBox;
+            x.Click += DeleteSubject;
         }
 
-        private void DeleteTextBox(object sender, RoutedEventArgs e)
+        private void DeleteSubject(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("asd");
             Button X = (Button)sender;
             string name = X.Name.Substring(7);
             Button l = schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == name);
+
+            TextBox tb = schGrid.Children.OfType<TextBox>().FirstOrDefault(x => x.Name == "TextBoxSubject" + (TextBoxCount-1));
+            Button b = schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == "mainButton");
+            b.Margin = tb.Margin;
+            tb.Margin = Subjects.Last().Margin;
+            
+            for (int i = Subjects.Count - 1; i > Subjects.IndexOf(l); i--)
+                Subjects[i].Margin = Subjects[i - 1].Margin;
+
+            Subjects.Remove(l);
             schGrid.Children.Remove(l);
         }
         public void DelDel(object sender, MouseEventArgs e)
@@ -272,10 +274,6 @@ namespace GroupMonitorApp
             Thread.Sleep(500);
             var l = (Button)sender;
             l.Dispatcher.Invoke((Action)(() => { schGrid.Children.Remove(schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == ("ButtonX" + l.Name))); }));
-            
-        }
-        public void DeleteTextBox(object sender, MouseEventArgs e)
-        {
             
         }
     }
