@@ -34,7 +34,7 @@ namespace GroupMonitorApp
         private int SchTop = 35;
 
         private int TextBoxCount = 0;
-        private List<Button> Subjects= new List<Button>();
+        private List<Label> Subjects= new List<Label>();
 
         public Schedule()
         {
@@ -110,10 +110,10 @@ namespace GroupMonitorApp
 
                 b.Margin = new Thickness(t.Margin.Left, t.Margin.Top + SubjectHeight + 3, 0, 0);
 
-                Button replacement = new Button();
+                Label replacement = new Label();
+                DrawLabel(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text, "LabelSubject" + (TextBoxCount - 1));
+                replacement.BorderBrush = Brushes.SlateGray;
                 Subjects.Add(replacement);
-                DrawButton(replacement, "LabelSubject" + (TextBoxCount - 1), replaceable.Text);
-                replacement.Margin = new Thickness((int)replaceable.Margin.Left, (int)replaceable.Margin.Top, 0, 0);
                 replacement.MouseEnter += ShowDel;
                 replacement.MouseLeave += DelDel;
                 schGrid.Children.Remove(replaceable);
@@ -231,7 +231,7 @@ namespace GroupMonitorApp
 
         public void ShowDel(object sender, MouseEventArgs e)
         {
-            Button l = (Button)sender;
+            Label l = (Label)sender;
             Button x = new Button();
             DrawButton(x, "ButtonX"+l.Name, "");
             x.Margin = new Thickness((int)(l.Margin.Left + l.Width), (int)l.Margin.Top, 0, 0);
@@ -249,7 +249,7 @@ namespace GroupMonitorApp
         {
             Button X = (Button)sender;
             string name = X.Name.Substring(7);
-            Button l = schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == name);
+            Label l = schGrid.Children.OfType<Label>().FirstOrDefault(x => x.Name == name);
 
             TextBox tb = schGrid.Children.OfType<TextBox>().FirstOrDefault(x => x.Name == "TextBoxSubject" + (TextBoxCount-1));
             Button b = schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == "mainButton");
@@ -264,7 +264,7 @@ namespace GroupMonitorApp
         }
         public void DelDel(object sender, MouseEventArgs e)
         {
-            Button l = (Button)sender;
+            Label l = (Label)sender;
             Thread t = new Thread(method);
             t.Start(l);
         }
@@ -272,7 +272,7 @@ namespace GroupMonitorApp
         void method(object sender)
         {
             Thread.Sleep(500);
-            var l = (Button)sender;
+            var l = (Label)sender;
             l.Dispatcher.Invoke((Action)(() => { schGrid.Children.Remove(schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == ("ButtonX" + l.Name))); }));
             
         }
