@@ -114,9 +114,17 @@ namespace GroupMonitorApp
                 b.Margin = new Thickness(t.Margin.Left, t.Margin.Top + SubjectHeight + 3, 0, 0);
 
 
-                Label replacement = new Label();
+                /*Label replacement = new Label();
                 DrawLabel(replacement, (int)replaceable.Margin.Left, (int)replaceable.Margin.Top, SubjectWidth, SubjectHeight, replaceable.Text, "LabelSubject" + (TextBoxCount - 1));
                 replacement.BorderBrush = Brushes.SlateGray;
+                replacement.MouseMove += ShowDel;
+                replacement.MouseLeave += DelDel;
+                schGrid.Children.Remove(replaceable);
+                replacement.MouseMove += SubjectMouseMove;*/
+                Button replacement = new Button();
+                DrawButton(replacement, "LabelSubject" + (TextBoxCount - 1), replaceable.Text);
+                replacement.Margin = new Thickness((int)replaceable.Margin.Left, (int)replaceable.Margin.Top, 0, 0);
+                //replacement.BorderBrush = Brushes.SlateGray;
                 replacement.MouseMove += ShowDel;
                 replacement.MouseLeave += DelDel;
                 schGrid.Children.Remove(replaceable);
@@ -234,9 +242,12 @@ namespace GroupMonitorApp
 
         public void ShowDel(object sender, MouseEventArgs e)
         {
-            Label l = (Label)sender;
-            Label x = new Label();
-            DrawLabel(x, (int)(l.Margin.Left + l.Width), (int)l.Margin.Top, 10, 10, "", "LabelX"+l.Name);
+            Button l = (Button)sender;
+            Button x = new Button();
+            DrawButton(x, "ButtonX"+l.Name, "");
+            x.Margin = new Thickness((int)(l.Margin.Left + l.Width), (int)l.Margin.Top, 0, 0);
+            x.Width = 10;
+            x.Height = 10;
             x.Padding = new Thickness(0,0,0,0);
             BitmapImage img = new BitmapImage(new Uri("pack://application:,,,/Del.png"));
             Image i = new Image();
@@ -246,16 +257,17 @@ namespace GroupMonitorApp
         }
         public void DelDel(object sender, MouseEventArgs e)
         {
-            Label l = (Label)sender;
-            schGrid.Children.Remove(schGrid.Children.OfType<Label>().FirstOrDefault(x => x.Name == ("LabelX" + l.Name)));
+            Button l = (Button)sender;
+            schGrid.Children.Remove(schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == ("ButtonX" + l.Name)));
+            
             //Label z = schGrid.Children.OfType<Label>().FirstOrDefault(x => x.Name == ("LabelX" + l.Name));
             //z.Margin = new Thickness(10,10,0,0);
         }
         public void DeleteTextBox(object sender, MouseEventArgs e)
         {
-            Label X = (Label)sender;
-            string name = X.Name.Substring(6);
-            TextBox l = schGrid.Children.OfType<TextBox>().FirstOrDefault(x => x.Name == name);
+            Button X = (Button)sender;
+            string name = X.Name.Substring(7);
+            Button l = schGrid.Children.OfType<Button>().FirstOrDefault(x => x.Name == name);
             schGrid.Children.Remove(l);
         }
     }

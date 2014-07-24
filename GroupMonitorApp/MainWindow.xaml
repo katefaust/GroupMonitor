@@ -2,8 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="506" Width="845">
-    <Grid Name="mainGrid">
-        <Button Content="Button" HorizontalAlignment="Left" Margin="723,70,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+    <Grid  Margin="0,0,0,0">
+        <Grid Name="mainGrid" HorizontalAlignment="Left" Height="476" VerticalAlignment="Top" Width="441"/>
+        <Grid HorizontalAlignment="Left" Height="476" Margin="548,0,0,0" VerticalAlignment="Top" Width="289">
+        <Button Name="Button1" Content="Button" HorizontalAlignment="Left" Margin="100,128,0,0" VerticalAlignment="Top" Click="Button_Click_1"  Width="75"/>
+        </Grid>
     </Grid>
     
 </Window>

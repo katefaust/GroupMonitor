@@ -36,6 +36,7 @@ namespace GroupMonitorApp
             InitializeComponent();
             journal = new Journal();
             schedules = new Schedules();
+
             DrawScene();  
         }
 
