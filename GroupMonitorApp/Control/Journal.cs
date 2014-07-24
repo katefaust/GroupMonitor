@@ -24,14 +24,11 @@ namespace GroupMonitorApp.Control
         /// <param name="day">Дата записи</param>
         /// <param name="absent">Новое количество пропусков</param>
         /// <param name="valid">Уважительная причина</param>
-        public void UpdateEntry(int studentId, int subjNumber, DateTime day, int hourNumber, StudentPresence state)
+        public void UpdateEntry(int studentId, int subjNumber, DateTime day, StudentPresence firstHour, StudentPresence secondHour)
         {
             JournalEntry entry = entries.Where(x => x.Stud.Id == studentId && x.SubjNumber == subjNumber && x.Day == day).First();
-            switch (hourNumber)
-            {
-                case 1: {entry.FirstHour = state; break;}
-                case 2: {entry.SecondHour = state; break;}
-            }
+            entry.FirstHour = firstHour;
+            entry.SecondHour = secondHour;
             DBConnection.AddJournalEntry(entry);
         }
         public void AddStudent(string name)
@@ -56,35 +53,19 @@ namespace GroupMonitorApp.Control
         /// <param name="daySchedules">Соответствующая запись из расписания</param>
         /// <param name="hourNumber">Первый или второй час</param>
         /// <param name="state">Присутствие студента</param>
-        public void AddEntry(int studId, int subjNumber, DateTime day, SchedulesEntry daySchedules, int hourNumber, StudentPresence state)
+        public void AddEntry(int studId, int subjNumber, DateTime day, SchedulesEntry daySchedules, StudentPresence firstHour, StudentPresence secondHour)
         {
-            switch (hourNumber)
-            {
-                case 1:
-                    {
-                        entries.Add(new JournalEntry()
-                            {
-                                Stud = GetStudentById(studId),
-                                Day = day,
-                                SubjNumber = subjNumber,
-                                DaySchedules = daySchedules,
-                                FirstHour = state
-                            });
-                        break;
-                    }
-                case 2:
-                    {
-                        entries.Add(new JournalEntry()
-                        {
-                            Stud = GetStudentById(studId),
-                            Day = day,
-                            SubjNumber = subjNumber,
-                            DaySchedules = daySchedules,
-                            SecondHour = state
-                        });
-                        break;
-                    }
-            }
+
+            entries.Add(new JournalEntry()
+                {
+                    Stud = GetStudentById(studId),
+                    Day = day,
+                    SubjNumber = subjNumber,
+                    DaySchedules = daySchedules,
+                    FirstHour = firstHour,
+                    SecondHour = secondHour
+                });
+
             DBConnection.AddJournalEntry(entries.Last());
         }
         /// <summary>
