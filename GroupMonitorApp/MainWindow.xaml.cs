@@ -146,42 +146,35 @@ namespace GroupMonitorApp
         public void CellClick(object sender, EventArgs e)
         {
             Label l = (Label)sender;
+            StudentPresence state = StudentPresence.Present;
             if (l.Background == Brushes.White)
-                l.Background = Brushes.Red;
-            else
             {
+                l.Background = Brushes.Red;
+                state = StudentPresence.AbsentNoReason;
+            }
+            else
                 if (l.Background == Brushes.Red)
-                    l.Background = Brushes.LimeGreen;
-                else
                 {
+                    l.Background = Brushes.LimeGreen;
+                    state = StudentPresence.AbsentWithReason;
+                }
+                else
                     if (l.Background == Brushes.LimeGreen)
                         l.Background = Brushes.White;
-                }
-            }
             string[] s = l.Name.Split(new string[] { "LabelSt", "Subj", "Cell" }, StringSplitOptions.RemoveEmptyEntries);
-            SaveEntry(int.Parse(s[0]), int.Parse(s[1]));
+            SaveEntry(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2]), state);
         }
         public void CellClear(object sender, EventArgs e)
         {
             Label l = (Label)sender;
             l.Background = Brushes.White;
         }
-        public void SaveEntry(int studentId, int subjNumber)
+        public void SaveEntry(int studentId, int subjNumber, int cellNumber, StudentPresence state)
         {
-            var cell1 = mainGrid.Children.OfType<Label>().FirstOrDefault(x => x.Name == "LabelSt" + studentId + "Subj" + subjNumber + "Cell1");
-            var cell2 = mainGrid.Children.OfType<Label>().FirstOrDefault(x => x.Name == "LabelSt" + studentId + "Subj" + subjNumber + "Cell2");
-            int absent = 0;
-            if (cell1.Background != Brushes.White) absent++;
-            if (cell2.Background != Brushes.White) absent++;
-            bool valid;
-            if (cell1.Background == Brushes.LimeGreen || cell2.Background == Brushes.LimeGreen)
-                valid = true;
-            else
-                valid = false;
             if (journal.HasEntry(studentId, subjNumber, date))
-                journal.UpdateEntry(studentId, subjNumber, date, absent, valid);
+                journal.UpdateEntry(studentId, subjNumber, date, cellNumber, state);
             else
-                journal.AddEntry(studentId, subjNumber, date, schedules.GetSchedulesEntry(date, subjNumber), absent, valid);
+                journal.AddEntry(studentId, subjNumber, date, schedules.GetSchedulesEntry(date, subjNumber), cellNumber, state);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

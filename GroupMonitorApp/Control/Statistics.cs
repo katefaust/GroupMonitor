@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GroupMonitorApp.Model.Entities;
+using GroupMonitorApp.Model;
 
 namespace GroupMonitorApp.Control
 {
@@ -25,17 +26,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntriesForStudent(studId))
             {
-                if(entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if(entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
@@ -50,17 +50,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntriesForStudent(studId,weekNumber))
             {
-                if (entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
@@ -76,17 +75,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntriesForStudent(studId, from, to))
             {
-                if (entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
@@ -101,17 +99,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntriesForStudent(studId).Where(x=>x.DaySchedules.Subject == subject))
             {
-                if (entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
@@ -127,17 +124,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntriesForStudent(studId, weekNumber).Where(x => x.DaySchedules.Subject == subject))
             {
-                if (entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
@@ -154,17 +150,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntriesForStudent(studId, from, to).Where(x => x.DaySchedules.Subject == subject))
             {
-                if (entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
@@ -178,17 +173,16 @@ namespace GroupMonitorApp.Control
             Pass pass = new Pass();
             foreach (var entry in journal.GetEntries(weekNumber))
             {
-                if (entry.Absent > 0)
-                    if (entry.Valid)
-                    {
-                        pass.ValidHours += entry.Absent;
-                        pass.ValidLessons++;
-                    }
-                    else
-                    {
-                        pass.NotValidHours += entry.Absent;
-                        pass.NotValidLessons++;
-                    }
+                switch (entry.FirstHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; pass.ValidLessons++; break;
+                }
+                switch (entry.SecondHour)
+                {
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                }
             }
             return pass;
         }
