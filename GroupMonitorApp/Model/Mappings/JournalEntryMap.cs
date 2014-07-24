@@ -13,7 +13,7 @@ namespace GroupMonitorApp.Model.Mappings
         public JournalEntryMap()
         {
             Id(x => x.Id);
-            References(x => x.Stud).UniqueKey("Entries").Not.Nullable();
+            References(x => x.Stud).UniqueKey("Entries").Not.Nullable().Not.LazyLoad();
             Map(x => x.Day).UniqueKey("Entries").CustomType("date").Not.Nullable();
             Map(x => x.SubjNumber).UniqueKey("Entries").Not.Nullable();
             References(x => x.DaySchedules).Not.Nullable();

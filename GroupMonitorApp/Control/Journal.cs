@@ -30,7 +30,7 @@ namespace GroupMonitorApp.Control
         /// <param name="valid">Уважительная причина</param>
         public void UpdateEntry(int studentId, int subjNumber, DateTime day, int absent, bool valid)
         {
-            JournalEntry entry = entries.Where(x => x.Stud == GetStudentById(studentId) && x.SubjNumber == subjNumber && x.Day == day).First();
+            JournalEntry entry = entries.Where(x => x.Stud.Id == studentId && x.SubjNumber == subjNumber && x.Day == day).First();
             entry.Absent = absent;
             entry.Valid = valid;
             DBConnection.AddJournalEntry(entry);
@@ -132,7 +132,14 @@ namespace GroupMonitorApp.Control
         }
         public bool HasEntry(int studentId, int subjNumber, DateTime date)
         {
-            if (entries.Where(x => x.Stud == GetStudentById(studentId) && x.SubjNumber == subjNumber && x.Day == date).Count() != 0)
+            if (entries.Where(x => x.Stud.Id == studentId && x.SubjNumber == subjNumber && x.Day == date).Count() != 0)
+                return true;
+            else
+                return false;
+        }
+        public bool HasEntry(DateTime date)
+        {
+            if (entries.Where(x => x.Day == date).Count() != 0)
                 return true;
             else
                 return false;
