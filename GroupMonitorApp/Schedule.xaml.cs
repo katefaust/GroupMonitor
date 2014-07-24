@@ -125,7 +125,7 @@ namespace GroupMonitorApp
                 DrawButton(replacement, "LabelSubject" + (TextBoxCount - 1), replaceable.Text);
                 replacement.Margin = new Thickness((int)replaceable.Margin.Left, (int)replaceable.Margin.Top, 0, 0);
                 //replacement.BorderBrush = Brushes.SlateGray;
-                replacement.MouseMove += ShowDel;
+                replacement.MouseEnter += ShowDel;
                 replacement.MouseLeave += DelDel;
                 schGrid.Children.Remove(replaceable);
                 replacement.MouseMove += SubjectMouseMove;
