@@ -94,6 +94,7 @@ namespace GroupMonitorApp
         {
             TextBox t = new TextBox();
             DrawTextBox(t, BorderLeft, BorderTop, "TextBoxSubject" + TextBoxCount);
+            t.Focus();
 
             Button b = new Button();
             DrawButton(b, "mainButton", "Добавить");
@@ -107,6 +108,7 @@ namespace GroupMonitorApp
             {
                 TextBox t = new TextBox();
                 DrawTextBox(t, (int)b.Margin.Left, (int)b.Margin.Top, "TextBoxSubject" + TextBoxCount);
+                t.Focus();
 
                 b.Margin = new Thickness(t.Margin.Left, t.Margin.Top + SubjectHeight + 3, 0, 0);
 
