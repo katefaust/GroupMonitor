@@ -42,7 +42,7 @@ namespace GroupMonitorApp.Control
         /// <param name="weekType">Первая или вторая неделя</param>
         /// <param name="subjNumber">Номер предмета в расписании</param>
         /// <param name="subject">Новый предмет, null - удалить запись</param>
-        public void UpdateEntry(DayOfWeek dayOfWeek, int weekType, int subjNumber, Subject subject)
+        public void UpdateEntry(DayOfWeek dayOfWeek, WeekType weekType, int subjNumber, Subject subject)
         {
             var entry = entries.Where(x => x.DayOfWeek == dayOfWeek && x.WeekType == weekType && x.SubjNumber == subjNumber).First();
             if (subjects != null)
@@ -61,7 +61,7 @@ namespace GroupMonitorApp.Control
         /// <param name="weekType">Первая или вторая неделя</param>
         /// <param name="subject">Предмет</param>
         /// <param name="subjectNumber">Номер предмета в расписании</param>
-        public void AddEntry(DayOfWeek dayOfWeek, int weekType, Subject subject, int subjectNumber)
+        public void AddEntry(DayOfWeek dayOfWeek, WeekType weekType, Subject subject, int subjectNumber)
         {
             entries.Add(new SchedulesEntry()
                 {
@@ -89,13 +89,13 @@ namespace GroupMonitorApp.Control
         public SchedulesEntry GetSchedulesEntry(DateTime date, int subjectNumber)
         {
             SchedulesEntry entry = entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
-                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 1 : 2)).First();
+                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).First();
             return entry;
  
         }
         public List<SchedulesEntry> GetSchedulesEntry(DateTime date)
         {
-            return entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 1 : 2)).ToList();
+            return entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).ToList();
 
         }
         public static int GetWeekNumberСontainsDate(DateTime date)

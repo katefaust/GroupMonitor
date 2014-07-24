@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ namespace GroupMonitorApp.Model.Entities
         public virtual int SubjNumber { get; set; }
         public virtual DateTime Day { get; set; }
         public virtual SchedulesEntry DaySchedules { get; set; }
-        public virtual int Absent { get; set; }
-        public virtual bool Valid { get; set; }
+        [DefaultValue(StudentPresence.Present)]
+        public virtual StudentPresence FirstHour { get; set; }
+        [DefaultValue(StudentPresence.Present)]
+        public virtual StudentPresence SecondHour { get; set; }
     }
 }

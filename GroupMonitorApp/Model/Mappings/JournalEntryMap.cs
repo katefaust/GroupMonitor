@@ -17,8 +17,8 @@ namespace GroupMonitorApp.Model.Mappings
             Map(x => x.Day).UniqueKey("Entries").CustomType("date").Not.Nullable();
             Map(x => x.SubjNumber).UniqueKey("Entries").Not.Nullable();
             References(x => x.DaySchedules).Not.Nullable();
-            Map(x => x.Absent).Not.Nullable();
-            Map(x => x.Valid).Not.Nullable();
+            Map(x => x.FirstHour).Not.Nullable();
+            Map(x => x.SecondHour).Not.Nullable();
         }
     }
 }

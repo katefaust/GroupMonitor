@@ -28,11 +28,14 @@ namespace GroupMonitorApp.Control
         /// <param name="day">Дата записи</param>
         /// <param name="absent">Новое количество пропусков</param>
         /// <param name="valid">Уважительная причина</param>
-        public void UpdateEntry(int studentId, int subjNumber, DateTime day, int absent, bool valid)
+        public void UpdateEntry(int studentId, int subjNumber, DateTime day, int hourNumber, StudentPresence state)
         {
             JournalEntry entry = entries.Where(x => x.Stud.Id == studentId && x.SubjNumber == subjNumber && x.Day == day).First();
-            entry.Absent = absent;
-            entry.Valid = valid;
+            switch (hourNumber)
+            {
+                case 1: {entry.FirstHour = state; break;}
+                case 2: {entry.SecondHour = state; break;}
+            }
             DBConnection.AddJournalEntry(entry);
         }
         public void AddStudent(string name)
@@ -55,19 +58,37 @@ namespace GroupMonitorApp.Control
         /// <param name="subjNumber">Предмет по счету</param>
         /// <param name="day">Дата записи</param>
         /// <param name="daySchedules">Соответствующая запись из расписания</param>
-        /// <param name="absent">Количество пропусков</param>
-        /// <param name="valid">Уважительная причина</param>
-        public void AddEntry(int studId, int subjNumber, DateTime day, SchedulesEntry daySchedules, int absent, bool valid )
+        /// <param name="hourNumber">Первый или второй час</param>
+        /// <param name="state">Присутствие студента</param>
+        public void AddEntry(int studId, int subjNumber, DateTime day, SchedulesEntry daySchedules, int hourNumber, StudentPresence state)
         {
-            entries.Add(new JournalEntry()
+            switch (hourNumber)
             {
-                Stud = GetStudentById(studId),
-                Day = day,
-                SubjNumber = subjNumber,
-                DaySchedules = daySchedules,
-                Absent = absent,
-                Valid = valid
-            });
+                case 1:
+                    {
+                        entries.Add(new JournalEntry()
+                            {
+                                Stud = GetStudentById(studId),
+                                Day = day,
+                                SubjNumber = subjNumber,
+                                DaySchedules = daySchedules,
+                                FirstHour = state
+                            });
+                        break;
+                    }
+                case 2:
+                    {
+                        entries.Add(new JournalEntry()
+                        {
+                            Stud = GetStudentById(studId),
+                            Day = day,
+                            SubjNumber = subjNumber,
+                            DaySchedules = daySchedules,
+                            SecondHour = state
+                        });
+                        break;
+                    }
+            }
             DBConnection.AddJournalEntry(entries.Last());
         }
         /// <summary>
