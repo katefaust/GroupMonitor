@@ -234,13 +234,13 @@ namespace GroupMonitorApp
         {
             Label l = sender as Label;
             if (e.LeftButton == MouseButtonState.Pressed)
-                DragDrop.DoDragDrop(l, l.Content, DragDropEffects.Copy);
+                DragDrop.DoDragDrop(l, l.Content.ToString(), DragDropEffects.Copy);
         }
         public void SubjectCopy(object sender, DragEventArgs e)
         {
             Label l = sender as Label;
             string dataString = (string)e.Data.GetData(DataFormats.Text);
-            l.Content = dataString.Substring(25);
+            l.Content = dataString;
         }
     }
 }

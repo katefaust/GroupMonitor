@@ -89,13 +89,13 @@ namespace GroupMonitorApp.Control
         public SchedulesEntry GetSchedulesEntry(DateTime date, int subjectNumber)
         {
             SchedulesEntry entry = entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
-                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 2 : 1)).First();
+                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 1 : 2)).First();
             return entry;
  
         }
         public List<SchedulesEntry> GetSchedulesEntry(DateTime date)
         {
-            return entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 2 : 1)).ToList();
+            return entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? 1 : 2)).ToList();
 
         }
         public static int GetWeekNumberСontainsDate(DateTime date)

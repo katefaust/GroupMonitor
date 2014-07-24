@@ -29,7 +29,7 @@ namespace GroupMonitorApp
         private int StudentCellHeight = 20;
         private int BorderLeft = 10;
         private int BorderTop = 10;
-        DateTime date = new DateTime(2014, 9, 2);
+        DateTime date = new DateTime(2014, 9, 1);
         private Journal journal;
         private Schedules schedules;
         public MainWindow()
