@@ -12,7 +12,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GroupMonitorApp.Control;
 
@@ -29,7 +28,7 @@ namespace GroupMonitorApp
         private int StudentCellHeight = 20;
         private int BorderLeft = 10;
         private int BorderTop = 10;
-        DateTime date = new DateTime(2014, 9, 1);
+        DateTime date = Schedules.SemesterStartedDate;
         private Journal journal;
         private Schedules schedules;
         public MainWindow()
@@ -37,7 +36,7 @@ namespace GroupMonitorApp
             InitializeComponent();
             journal = new Journal();
             schedules = new Schedules();
-            DrawScene(date);  
+            DrawScene();  
         }
 
         public void DrawLabel(Label l, int width, int height, string content)
@@ -61,7 +60,7 @@ namespace GroupMonitorApp
         }
 
 
-        public void DrawSubjects(DateTime date)
+        public void DrawSubjects()
         {
             int n = schedules.NumberOfSubjects(date);
             Label[] l = new Label[n];
@@ -96,7 +95,7 @@ namespace GroupMonitorApp
                 mainGrid.Children.Add(l[i]);
             }
         }
-        public void DrawCells(DateTime date)
+        public void DrawCells()
         {
             int n = journal.NumberOfStudents();
             int m = schedules.NumberOfSubjects(date);
@@ -125,19 +124,50 @@ namespace GroupMonitorApp
         {
             Calendar calendar = new Calendar();
             calendar.Name = "MainCalendar";
-            calendar.DisplayMode = CalendarMode.Year;
+            calendar.DisplayMode = CalendarMode.Month;
             calendar.BorderBrush = Brushes.Black;
             calendar.Margin = new Thickness(BorderLeft, BorderTop - 3, 0, 0);
             calendar.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             calendar.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            calendar.DisplayDateStart = Schedules.SemesterStartedDate;
+            calendar.DisplayDate = DateTime.Now;
+            calendar.SelectedDate = date;
+            calendar.SelectedDatesChanged += calendar_SelectedDatesChanged;
             mainGrid.Children.Add(calendar);
         }
 
-        public void DrawScene(DateTime date)
+        void calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
-            DrawSubjects(date);
+            this.date = ((Calendar)sender).SelectedDate.Value;
+            DrawScene();
+        }
+
+        private void FillCells()
+        {
+            foreach (var entry in journal.GetEntries(date, date))
+            {
+                mainGrid.Children.OfType<Label>().FirstOrDefault(label => label.Name == "LabelSt" + entry.Stud.Id + "Subj" + entry.SubjNumber + "Cell1").Background = GetcolourForState(entry.FirstHour);
+                mainGrid.Children.OfType<Label>().FirstOrDefault(label => label.Name == "LabelSt" + entry.Stud.Id + "Subj" + entry.SubjNumber + "Cell2").Background = GetcolourForState(entry.SecondHour); 
+            }
+        }
+        private SolidColorBrush GetcolourForState(StudentPresence state)
+        {
+            switch (state)
+            {
+                case StudentPresence.AbsentNoReason: return Brushes.Red;
+                case StudentPresence.AbsentWithReason: return Brushes.LimeGreen;
+            }
+            return Brushes.White;
+        }
+
+        public void DrawScene()
+        {
+            mainGrid.Children.Clear();
+            DrawSubjects();
             DrawStudents();
-            DrawCells(date);
+            DrawCells();
+            if (journal.HasEntry(date))
+                FillCells();
             DrawCalendar(mainGrid);
 
         }
@@ -168,6 +198,8 @@ namespace GroupMonitorApp
         {
             Label l = (Label)sender;
             l.Background = Brushes.White;
+            string[] s = l.Name.Split(new string[] { "LabelSt", "Subj", "Cell" }, StringSplitOptions.RemoveEmptyEntries);
+            SaveEntry(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2]), StudentPresence.Present);
         }
         public void SaveEntry(int studentId, int subjNumber, int cellNumber, StudentPresence state)
         {
