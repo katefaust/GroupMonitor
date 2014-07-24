@@ -25,7 +25,7 @@ namespace GroupMonitorApp.Model
                                             .TrustedConnection()))
                 .Mappings(m =>
                     m.FluentMappings.AddFromAssemblyOf<DBConnection>())
-                .ExposeConfiguration(BuildSchema)
+                //.ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
         }
 
