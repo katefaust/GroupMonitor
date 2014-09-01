@@ -39,7 +39,6 @@ namespace GroupMonitorApp.View
             this.schedules = schedules;
             nOfStudents = journal.NumberOfStudents();
             nOfSubjects = schedules.NumberOfSubjects(date);
-            cells = new Cell[nOfStudents, nOfSubjects * 2];
         }
         private void DrawCells()
         {
@@ -83,12 +82,16 @@ namespace GroupMonitorApp.View
             Label[] l = new Label[n];
             int width = SubjectCellWidth;
             int height = SubjectCellHeight;
-
+            int ofset = 1;
             for (int i = 0; i < n; i++)
-            {
+            {                
+                while (!schedules.HasEntry(date, i + ofset))
+                {
+                    ofset++;                    
+                }
                 l[i] = new Label();
                 l[i].Name = "LabelSubject" + (i + 1).ToString();
-                DrawLabel(l[i], width, height, schedules.GetSchedulesEntry(date, i + 1).Subject.Name);
+                DrawLabel(l[i], width, height, schedules.GetSchedulesEntry(date, i + ofset).Subject.Name);
                 l[i].Margin = new Thickness(BorderLeft - 1 + StudentCellWidth + i * (height - 1), BorderTop + width, 0, 0);
                 TransferLabel(l[i], -90);
                 grid.Children.Add(l[i]);
@@ -135,6 +138,7 @@ namespace GroupMonitorApp.View
         public void DrawScene()
         {
             nOfSubjects = schedules.NumberOfSubjects(date);
+            cells = new Cell[nOfStudents, nOfSubjects * 2];
             grid.Children.Clear();
             DrawSubjects();
             DrawStudents();

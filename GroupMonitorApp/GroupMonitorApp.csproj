@@ -124,7 +124,18 @@
       <DependentUpon>Schedule.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Cell.cs" />
+    <Compile Include="View\Controls\ScheduleCell.xaml.cs">
+      <DependentUpon>ScheduleCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\ScheduleTable.xaml.cs">
+      <DependentUpon>ScheduleTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\SubjectList.xaml.cs">
+      <DependentUpon>SubjectList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\JournalView.cs" />
+    <Compile Include="View\ScheduleView.cs" />
+    <Compile Include="View\SubjectView.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -142,6 +153,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Schedule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\ScheduleCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\ScheduleTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\SubjectList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,7 +227,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Del.png" />
+    <Resource Include="Img\Del.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

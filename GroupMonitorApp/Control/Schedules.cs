@@ -86,6 +86,7 @@ namespace GroupMonitorApp.Control
         }
         public SchedulesEntry GetSchedulesEntry(DateTime date, int subjectNumber)
         {
+            if(!HasEntry(date, subjectNumber)) return null;
             SchedulesEntry entry = entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
                 x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).First();
             return entry;
@@ -96,10 +97,17 @@ namespace GroupMonitorApp.Control
             return entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).ToList();
 
         }
+        public SchedulesEntry GetSchedulesEntry(DayOfWeek day, WeekType week, int subjectNumber)
+        {
+            SchedulesEntry entry = entries.Where(x => x.DayOfWeek == day && x.SubjNumber == subjectNumber &&
+                x.WeekType == week).First();
+            return entry;
+
+        }
         public static int GetWeekNumberСontainsDate(DateTime date)
         {
             DateTime SemesterStart = SemesterStartedDate;
-            return (date.Day - SemesterStart.Day + DaysFromMonday(date)) / 7;
+            return (date.Day - SemesterStart.Day + DaysFromMonday(SemesterStart)) / 7;
         }
         public static int DaysFromMonday(DateTime date)
         {
@@ -118,6 +126,41 @@ namespace GroupMonitorApp.Control
         public int NumberOfSubjects(DateTime date)
         {
             return GetSchedulesEntry(date).Count;
+        }
+        public bool HasEntry(DateTime date, int subjectNumber)
+        {
+            if(entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
+                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).Count()>0)
+                return true;
+            else 
+                return false;
+        }
+        public bool HasEntry(DayOfWeek day, WeekType week, int subjNumber)
+        {
+            if (entries.Where(entry => entry.DayOfWeek == day && entry.WeekType == week && entry.SubjNumber == subjNumber).Count() > 0)
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// Возвращает 0 если в этот день на предмете subjNumber нет записей ни по первой ни по второй неделе
+        /// 1 - и по первой и по второй неделе расписание одинаково
+        /// 2 - есть "мигалка" 
+        /// </summary>
+        /// <param name="day">День недели</param>
+        /// <param name="subjNumber">номер предмета</param>
+        /// <returns></returns>
+        public int SubjInWeek(DayOfWeek day, int subjNumber)
+        {
+            if (HasEntry(day, WeekType.First, subjNumber))
+                if (HasEntry(day, WeekType.Second, subjNumber))
+                {
+                    if (GetSchedulesEntry(day, WeekType.First, subjNumber).Subject == GetSchedulesEntry(day, WeekType.Second, subjNumber).Subject)
+                        return 1;
+                }
+                else
+                    return 2;
+            if (HasEntry(day, WeekType.Second, subjNumber)) return 2;
+            return 0;
         }
     }
 }
