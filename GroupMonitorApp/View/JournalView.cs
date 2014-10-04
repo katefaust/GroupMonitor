@@ -149,6 +149,7 @@ namespace GroupMonitorApp.View
         }
         private void FillCells()
         {
+            if (nOfStudents == 0 || nOfSubjects == 0) return;
             foreach (var entry in journal.GetEntries(date, date))
             {
                 cells[entry.Stud.Id - 1, (entry.SubjNumber - 1) * 2].State = entry.FirstHour;

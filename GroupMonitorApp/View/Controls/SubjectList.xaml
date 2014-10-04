@@ -10,7 +10,7 @@
         <StackPanel x:Name="ListPanel" >
             <Label Content="Список предметов:" Margin="15,5,15,0"/>
             <TextBox x:Name="addTB" Height="26" Margin="15,5,15,0" TextAlignment="Justify" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <Button x:Name="AddSubjBtn" Content="Добавить" Margin="15,5,15,0" VerticalAlignment="Top" Height="24" Click="AddSubjBtn_Click"/>
+            <Button x:Name="AddSubjjBtn" Content="Добавить" Margin="15,5,15,0" VerticalAlignment="Top" Height="24" Click="AddSubjBtn_Click"/>
 
         </StackPanel>
     </ScrollViewer>

@@ -75,7 +75,7 @@ namespace GroupMonitorApp.Control
         /// <returns>Записи журнала</returns>
         public List<JournalEntry> GetEntriesForStudent(int StudentId)
         {
-            return entries.Where(x => x.Stud == GetStudentById(StudentId)).ToList();
+            return entries.Where(x => x.Stud.Id == StudentId).ToList();
         }
         /// <summary>
         /// Все записи для одного студента за определенную неделю
@@ -122,7 +122,7 @@ namespace GroupMonitorApp.Control
         }
         public Student GetStudentById(int Id)
         {
-            return students.Where(x => x.Id == Id).First();
+            return students.ElementAt(Id - 1);
         }
         public int NumberOfStudents()
         {

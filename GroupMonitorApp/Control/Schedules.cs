@@ -87,8 +87,8 @@ namespace GroupMonitorApp.Control
         public SchedulesEntry GetSchedulesEntry(DateTime date, int subjectNumber)
         {
             if(!HasEntry(date, subjectNumber)) return null;
-            SchedulesEntry entry = entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
-                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).First();
+            SchedulesEntry entry = entries.Where(x => x.DayOfWeek == date.DayOfWeek  &&
+                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).ElementAt(subjectNumber -1);
             return entry;
  
         }
@@ -129,8 +129,8 @@ namespace GroupMonitorApp.Control
         }
         public bool HasEntry(DateTime date, int subjectNumber)
         {
-            if(entries.Where(x => x.DayOfWeek == date.DayOfWeek && x.SubjNumber == subjectNumber &&
-                x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).Count()>0)
+            if(entries.Where(x =>   x.DayOfWeek == date.DayOfWeek &&
+                                    x.WeekType == ((GetWeekNumberСontainsDate(date) % 2 == 0) ? WeekType.First : WeekType.Second)).Count() > 0 && GetSchedulesEntry(date).Count >= subjectNumber)
                 return true;
             else 
                 return false;

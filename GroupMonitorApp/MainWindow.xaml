@@ -5,8 +5,10 @@
         Title="MainWindow" Height="506" Width="845">
     <Grid  Margin="0,0,0,0">
         <Grid x:Name="mainGrid" HorizontalAlignment="Left" Height="476" VerticalAlignment="Top" Width="424" Margin="0,0,0,-1"/>
-        <Grid HorizontalAlignment="Left" Height="87" Margin="721,0,0,0" VerticalAlignment="Top" Width="106">
-            <Button x:Name="Button1" Content="Button" HorizontalAlignment="Left" Margin="22,59,0,0" VerticalAlignment="Top" Click="Button_Click_1"  Width="75"/>
+        <Grid HorizontalAlignment="Left" Height="135" Margin="721,10,0,0" VerticalAlignment="Top" Width="106">
+            <Button x:Name="btnSchedule" Content="Расписание" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_Click_1"  Width="75"/>
+            <Button x:Name="btnStudents" Content="Студенты" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="75" Click="btnStudents_Click"/>
+            <Button x:Name="btnStatistic" Content="Button" HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" Width="75" Click="btnStatistic_Click"/>
         </Grid>
     </Grid>
 

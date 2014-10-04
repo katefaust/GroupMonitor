@@ -48,6 +48,8 @@ namespace GroupMonitorApp.Model
         }
         public static void RemoveStudent(Student stud)
         {
+            List<Student> stu =  GetStudentsList(); 
+            if (GetStudentsList().Where(x => x.Id == stud.Id).Count() == 0) return;
             using (var session = SessionFactory.OpenSession())
             {
                 using (var transaction = session.BeginTransaction())

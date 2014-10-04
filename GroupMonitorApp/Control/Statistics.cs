@@ -94,7 +94,8 @@ namespace GroupMonitorApp.Control
         public Pass StudentMissed(int studId, Subject subject)
         {
             Pass pass = new Pass();
-            foreach (var entry in journal.GetEntriesForStudent(studId).Where(x=>x.DaySchedules.Subject == subject))
+            var e = journal.GetEntriesForStudent(studId);//.Where(x => x.DaySchedules.Subject.Id == subject.Id);
+            foreach (var entry in journal.GetEntriesForStudent(studId).Where(x=>x.DaySchedules.Subject.Id == subject.Id))
             {
                 switch (entry.FirstHour)
                 {
@@ -103,8 +104,8 @@ namespace GroupMonitorApp.Control
                 }
                 switch (entry.SecondHour)
                 {
-                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.NotValidLessons++; break;
-                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour != StudentPresence.Present) pass.ValidLessons++; break;
+                    case StudentPresence.AbsentNoReason: pass.NotValidHours++; if (entry.FirstHour == StudentPresence.Present) pass.NotValidLessons++; break;
+                    case StudentPresence.AbsentWithReason: pass.ValidHours++; if (entry.FirstHour == StudentPresence.Present) pass.ValidLessons++; break;
                 }
             }
             return pass;
